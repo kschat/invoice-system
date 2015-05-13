@@ -1,0 +1,9 @@
+{
+  "dependencies": {
+    "koa": "^0.20.0",
+    "koa-handlebars": "^0.5.3"
+  },
+  "devDependencies": {
+    "gulp": "^3.8.11"
+  }
+}
