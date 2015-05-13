@@ -8,3 +8,4 @@ pids
 node_modules
 
 public/vendor
+dist

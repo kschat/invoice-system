@@ -1,7 +1,8 @@
 'use strict';
 
-var koa = require('koa')
+let koa = require('koa')
   , hbs = require('koa-handlebars')
+  , serve = require('koa-static')
 
   , app = koa();
 
@@ -14,8 +15,8 @@ app.use(hbs({
   helpers: require('./lib/helpers')
 }));
 
-app.use(function *() {
-  yield this.render('home');
-});
+app.use(serve('./dist'));
+app.use(serve('./public'));
+app.use(require('./routes').routes());
 
 app.listen(3000);

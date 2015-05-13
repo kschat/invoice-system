@@ -1,9 +1,14 @@
 {
   "dependencies": {
     "koa": "^0.20.0",
-    "koa-handlebars": "^0.5.3"
+    "koa-handlebars": "^0.5.3",
+    "koa-router": "^4.3.2",
+    "koa-static": "^1.4.9"
   },
   "devDependencies": {
-    "gulp": "^3.8.11"
+    "gulp": "^3.8.11",
+    "gulp-concat": "^2.5.2",
+    "gulp-stylus": "^2.0.1",
+    "nib": "^1.1.0"
   }
 }
