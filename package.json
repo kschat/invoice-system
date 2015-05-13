@@ -1,9 +1,12 @@
 {
   "dependencies": {
+    "jugglingdb": "^0.3.0",
+    "jugglingdb-postgres": "^0.1.0",
     "koa": "^0.20.0",
     "koa-handlebars": "^0.5.3",
     "koa-router": "^4.3.2",
-    "koa-static": "^1.4.9"
+    "koa-static": "^1.4.9",
+    "ramda": "^0.14.0"
   },
   "devDependencies": {
     "gulp": "^3.8.11",

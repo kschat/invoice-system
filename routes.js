@@ -1,9 +1,8 @@
 'use strict';
 
-let router = require('koa-router')();
+let router = require('koa-router')()
+  , home = require('./handlers/home');
 
-router.get('/', function *() {
-  yield this.render('home');
-});
+router.get('/', home.index);
 
 module.exports = router;

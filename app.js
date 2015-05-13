@@ -3,20 +3,20 @@
 let koa = require('koa')
   , hbs = require('koa-handlebars')
   , serve = require('koa-static')
+  , R = require('ramda')
 
+  , settings = require('./config/settings')
+  , schema = require('./lib/databaseSchema')(settings.dataStore)
+  , handlebarsSettings = R.merge(settings.handlebars, R.__)
   , app = koa();
 
-app.use(hbs({
+app.use(hbs(handlebarsSettings({
   cache: app.env !== 'development',
-  viewsDir: 'views',
-  layoutsDir: 'views/layouts',
-  partialsDir: 'views/partials',
-  defaultLayout: 'main',
   helpers: require('./lib/helpers')
-}));
+})));
 
 app.use(serve('./dist'));
 app.use(serve('./public'));
 app.use(require('./routes').routes());
 
-app.listen(3000);
+app.listen(settings.port || 3000);
