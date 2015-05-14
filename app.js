@@ -7,7 +7,7 @@ let koa = require('koa')
 
   , settings = require('./config/settings')
   , schema = require('./lib/databaseSchema')(settings.dataStore)
-  , handlebarsSettings = R.merge(settings.handlebars, R.__)
+  , handlebarsSettings = R.merge(settings.viewEngine, R.__)
   , app = koa();
 
 app.use(hbs(handlebarsSettings({

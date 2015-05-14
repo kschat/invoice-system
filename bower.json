@@ -1,7 +1,7 @@
 {
-  "name": "hire-an-esquire-hw",
+  "name": "invoice-system",
   "version": "0.0.0",
-  "description": "Coding challenge for Hire an Esquire",
+  "description": "Invoice system written in node",
   "private": true,
   "ignore": [
     "**/.*",
