@@ -1,10 +1,8 @@
 'use strict';
 
-import Flux from 'flux';
 import React from 'react';
-import AppDispatcher from './dispatcher';
-import { EventEmitter } from 'events';
-import ApplicationView from './components/application/application.view';
+import ApplicationView from './components/application/views/application';
+import appConstants from './components/application/appConstants';
 
 new Promise(resolve => window.addEventListener('DOMContentLoaded', resolve))
   .then(() => {
