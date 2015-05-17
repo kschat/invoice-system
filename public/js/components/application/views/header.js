@@ -1,19 +1,19 @@
-'use strict';
-
 import React from 'react';
-import { Navbar, Nav, NavItem } from 'react-bootstrap';
+import { Button } from 'react-bootstrap';
 
-class Header extends React.Component {
+const Header = React.createClass({
   render() {
     return (
-      <Navbar fixedTop brand="Time Tracking">
-        <Nav>
-          <NavItem href="#">Jobs</NavItem>
-          <NavItem href="#">Invoices</NavItem>
-        </Nav>
-      </Navbar>
+      <div className="page-header clearfix">
+        <h1>
+          Jobs <small>Current active jobs</small>
+          <Button className="pull-right">
+            <i className="fa fa-plus" />
+          </Button>
+        </h1>
+      </div>
     );
   }
-}
+});
 
 export default Header;

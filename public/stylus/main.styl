@@ -1,1 +1,13 @@
+@require "libs";
+
+// Allow floated buttons in panel headers
+.panel-title {
+  @extend .clearfix;
+
+  > span {
+    display: inline-block;
+    vertical-align: sub;
+  }
+}
+
 body { padding-top: 70px; }

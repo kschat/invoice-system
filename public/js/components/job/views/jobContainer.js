@@ -1,11 +1,14 @@
-'use strict';
-
 import React from 'react';
 import JobList from './jobList';
 import JobInfo from './jobInfo';
+import { Well } from 'react-bootstrap';
 
-class JobContainer extends React.Component {
+const JobContainer = React.createClass({
   render() {
+    const mainContent = this.props.selectedJob
+      ? <JobInfo job={this.props.selectedJob} />
+      : <Well bsSize="large">No job selected</Well>;
+
     return (
       <div className="row">
         <div className="col-xs-4">
@@ -13,11 +16,11 @@ class JobContainer extends React.Component {
         </div>
 
         <div className="col-xs-8">
-          <JobInfo job={this.props.selectedJob} />
+          {mainContent}
         </div>
       </div>
     );
   }
-}
+});
 
 export default JobContainer;

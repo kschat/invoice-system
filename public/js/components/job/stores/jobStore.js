@@ -1,5 +1,4 @@
-'use strict';
-
+import R from 'ramda';
 import AppDispatcher from '../../application/appDispatcher';
 import AppConstants from '../../application/appConstants';
 import { EventEmitter } from 'events';
@@ -11,9 +10,11 @@ let _jobs = [
   { title: 'testing 2', id: 2, body: 'My second job' }
 ];
 
-let _setSelected = selected => {
-  _selected = _jobs.filter(job => job.id === selected)[0];
-};
+const _idEq = R.propEq('id');
+
+const _getJobById = R.compose(R.find(R.__, _jobs), _idEq);
+
+const _getJobIndexById = R.compose(R.findIndex(R.__, _jobs), _idEq);
 
 class JobStore extends EventEmitter {
   get jobs() { return _jobs; }
@@ -29,14 +30,18 @@ class JobStore extends EventEmitter {
   }
 }
 
-let jobStore = new JobStore();
+const jobStore = new JobStore();
 
-AppDispatcher.register(function(payload) {
-  let action = payload.action;
+AppDispatcher.register(payload => {
+  const action = payload.action;
 
   switch(action.actionType) {
     case AppConstants.SELECT_JOB:
-      _setSelected(action.data);
+      _selected = _getJobById(action.data);
+      break;
+    case AppConstants.DELETE_JOB:
+      _jobs = R.remove(R.findIndex(_idEq(action.data), _jobs), 1, _jobs);
+      _selected = null;
       break;
     default:
       return true;
