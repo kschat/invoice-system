@@ -5,6 +5,7 @@ let gulp = require('gulp')
   , concat = require('gulp-concat')
   , stylus = require('gulp-stylus')
   , nodemon = require('gulp-nodemon')
+  , shell = require('gulp-shell')
   , webpack = require('webpack')
   , webpackConfig = require('./webpack.config')
   , nib = require('nib')
@@ -45,6 +46,12 @@ gulp.task('scripts', function(cb) {
 
     cb();
   });
+});
+
+gulp.task('test', shell.task(['npm test']));
+
+gulp.task('watch:test', function() {
+  gulp.watch(paths.scripts + '**/*', ['test']);
 });
 
 gulp.task('watch', function() {
