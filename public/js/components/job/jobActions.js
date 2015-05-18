@@ -14,6 +14,27 @@ const JobActions = {
       actionType: AppConstants.DELETE_JOB,
       data
     });
+  },
+
+  updateJob(data) {
+    AppDispatcher.handleAction({
+      actionType: AppConstants.UPDATE_JOB,
+      data
+    });
+  },
+
+  updateEntry(data) {
+    AppDispatcher.handleAction({
+      actionType: AppConstants.UPDATE_TIME_ENTRY,
+      data
+    });
+  },
+
+  updateJobSuccess(data) {
+    AppDispatcher.handleAction({
+      actionType: AppConstants.UPDATE_JOB_SUCCESS,
+      data
+    });
   }
 }
 

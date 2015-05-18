@@ -1,18 +1,23 @@
 import React from 'react';
+import cx from 'classnames';
 import R from 'ramda';
 import jobActions from '../jobActions';
+import StageTextInput from '../../common/inputs/StageTextInput';
+import TimeTable from '../../timeEntry/views/timeTable';
 import {
     Panel,
     Button,
     ButtonGroup,
     ButtonToolbar,
-    Alert
+    Alert,
+    Input
   } from 'react-bootstrap';
 
 const JobInfo = React.createClass({
   getInitialState() {
     return {
-      showDeleteAlert: false
+      showDeleteAlert: false,
+      editMode: false
     };
   },
 
@@ -27,19 +32,51 @@ const JobInfo = React.createClass({
     this.toggleAlert();
   },
 
+  handleInputChange(id, prop, value) {
+    jobActions.updateJob({ id, prop, value });
+  },
+
+  toggleAlert() {
+    this.setState({ showDeleteAlert: !this.state.showDeleteAlert });
+  },
+
+  toggleEditMode() {
+    this.setState({ editMode: !this.state.editMode });
+  },
+
   renderHeader(job) {
+    const lockClassNames = cx('fa', {
+      'fa-lock': !this.state.editMode,
+      'fa-unlock': this.state.editMode
+    });
+
     return (
       <div>
         {job.title}
         <ButtonGroup className="pull-right">
-          <Button>
-            <i className="fa fa-pencil" />
+          <Button onClick={this.toggleEditMode}>
+            <i className={lockClassNames} />
           </Button>
 
           <Button onClick={this.toggleAlert}>
             <i className="fa fa-trash-o" />
           </Button>
         </ButtonGroup>
+      </div>
+    );
+  },
+
+  renderFooter(job) {
+    const message = this.props.jobSaveStatus
+      ? this.props.jobSaveStatus.message
+      : '';
+
+    return this.state.editMode && (
+      <div className="clearfix">
+        <span className="text-muted">{message}</span>
+        <Button className="pull-right">
+          <i className="fa fa-clock-o" /> Log time
+        </Button>
       </div>
     );
   },
@@ -64,27 +101,42 @@ const JobInfo = React.createClass({
     );
   },
 
-  render() {
-    let job = this.props.job
-      , showDeleteAlert = this.state.showDeleteAlert;
-
+  renderTimeEntries(job) {
     return (
-      <Panel header={this.renderHeader(job)}>
-        {showDeleteAlert && this.renderDeleteAlert(job)}
-
-        <dl className="dl-horizontal">
-          <dt>Hourly rate</dt>
-          <dd>$16.50</dd>
-
-          <dt>Tax rate</dt>
-          <dd>$1.50</dd>
-        </dl>
-      </Panel>
+      <TimeTable timeEntries={job.entries} editMode={this.state.editMode} />
     );
   },
 
-  toggleAlert() {
-    this.setState({ showDeleteAlert: !this.state.showDeleteAlert });
+  render() {
+    const job = this.props.job;
+    const showDeleteAlert = this.state.showDeleteAlert;
+    const inputProps = {
+      readOnly: !this.state.editMode,
+      labelClassName: 'col-xs-3',
+      wrapperClassName: 'col-xs-9'
+    };
+
+    return (
+      <Panel header={this.renderHeader(job)} footer={this.renderFooter(job)}>
+        {showDeleteAlert && this.renderDeleteAlert(job)}
+
+        <form className="form-horizontal">
+          <StageTextInput
+            {...inputProps}
+            label="Hourly rate"
+            value={job.hourlyRate}
+            onSave={R.partial(this.handleInputChange, job.id, 'hourlyRate')} />
+
+          <StageTextInput
+            {...inputProps}
+            label="Tax rate"
+            value={job.taxRate}
+            onSave={R.partial(this.handleInputChange, job.id, 'taxRate')} />
+        </form>
+
+        {job.entries && !!job.entries.length && this.renderTimeEntries(job)}
+      </Panel>
+    );
   }
 });
 

@@ -8,6 +8,7 @@
     "url": "https://github.com/kschat/invoice-system"
   },
   "dependencies": {
+    "classnames": "^2.1.1",
     "flux": "^2.0.3",
     "jugglingdb": "^0.3.0",
     "jugglingdb-postgres": "^0.1.0",

@@ -6,7 +6,8 @@ import jobStore from '../../job/stores/jobStore';
 
 const getStates = () => ({
   jobs: jobStore.jobs,
-  selectedJob: jobStore.selectedJob
+  selectedJob: jobStore.selectedJob,
+  jobSaveStatus: jobStore.jobSaveStatus
 });
 
 const ApplicationView = React.createClass({
@@ -30,7 +31,8 @@ const ApplicationView = React.createClass({
           <Header />
           <JobContainer
             jobs={this.state.jobs}
-            selectedJob={this.state.selectedJob} />
+            selectedJob={this.state.selectedJob}
+            jobSaveStatus={this.state.jobSaveStatus} />
         </div>
       </div>
     );

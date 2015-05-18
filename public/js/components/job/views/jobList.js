@@ -14,8 +14,8 @@ class JobList extends React.Component {
     return (
       <ListGroup>
         {this.props.jobs.map(job => {
-          let selectedJob = this.props.selectedJob
-            , selected = selectedJob && selectedJob.id === job.id;
+          const selectedJob = this.props.selectedJob;
+          const selected = selectedJob && selectedJob.id === job.id;
           return (
             <ListGroupItem
               href="#"
