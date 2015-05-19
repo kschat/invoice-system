@@ -1,14 +1,18 @@
 'use strict';
 
-let koa = require('koa')
-  , hbs = require('koa-handlebars')
-  , serve = require('koa-static')
-  , R = require('ramda')
+const koa = require('koa');
+const hbs = require('koa-handlebars');
+const serve = require('koa-static');
+const R = require('ramda');
 
-  , settings = require('./config/settings')
-  , schema = require('./lib/databaseSchema')(settings.dataStore)
-  , handlebarsSettings = R.merge(settings.viewEngine, R.__)
-  , app = koa();
+const settings = require('./config/settings');
+const schema = require('./lib/databaseHandler')(settings.dataStore);
+const routes = require('./routes');
+
+const handlebarsSettings = R.merge(settings.viewEngine, R.__);
+const app = koa();
+
+const appUseRoute = R.compose(app.use.bind(app), R.invoke('routes', []));
 
 app.use(hbs(handlebarsSettings({
   cache: app.env !== 'development',
@@ -17,6 +21,7 @@ app.use(hbs(handlebarsSettings({
 
 app.use(serve('./dist'));
 app.use(serve('./public'));
-app.use(require('./routes').routes());
+
+routes.map(appUseRoute);
 
 app.listen(settings.port || 3000);

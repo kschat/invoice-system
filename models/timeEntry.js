@@ -1,13 +1,28 @@
 'use strict';
 
-let settings = require('../config/settings.json')
-  , schema = require('../lib/databaseSchema')(settings.dataStore);
+const sequelize = require('../lib/databaseHandler');
+const types = sequelize.static;
 
-module.exports = schema.define('TimeEntry', {
-  id: { type: Number, unique: true },
-  time_spent: { type: Number },
-  entry_date: { type: Date, default: Date.now },
-  work_summary: { type: String }
+const TimeEntry = sequelize.schema.define('TimeEntry', {
+  id: {
+    type: types.INTEGER,
+    primaryKey: true,
+    autoIncrement: true
+  },
+  timeSpent: {
+    type: types.INTEGER,
+    field: 'time_spent'
+  },
+  entryDate: {
+    type: types.DATE,
+    field: 'entry_date'
+  },
+  workSummary: {
+    type: types.TEXT,
+    field: 'work_summary'
+  }
 }, {
-  table: 'time_entry'
+  tableName: 'time_entry'
 });
+
+module.exports = TimeEntry;

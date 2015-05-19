@@ -1,6 +1,6 @@
 'use strict';
 
-let index = function *() {
+const index = function *(next) {
   yield this.render('home');
 };
 

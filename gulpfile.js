@@ -64,7 +64,10 @@ gulp.task('daemon', function() {
     script: 'app.js',
     ext: 'js json',
     ignore: ['node_modules/**', 'public/**', 'dist/**'],
-    env: { NODE_ENV: 'development' }
+    env: { NODE_ENV: 'development' },
+    "execMap": {
+      "js": "iojs"
+    }
   });
 });
 

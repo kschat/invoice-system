@@ -1,8 +1,26 @@
 'use strict';
 
-let router = require('koa-router')()
-  , home = require('./handlers/home');
+const KoaRouter = require('koa-router');
+const home = require('./handlers/home');
+const job = require('./handlers/job');
+const timeEntry = require('./handlers/timeEntry');
 
-router.get('/', home.index);
+// App routes
 
-module.exports = router;
+const appRouter = new KoaRouter();
+
+appRouter.get('/', home.index);
+
+// API routes
+
+const apiRouter = new KoaRouter({
+  prefix: '/api'
+});
+
+apiRouter.get('/job', job.getAll);
+apiRouter.get('/job/:id', job.getOne);
+
+apiRouter.get('/time_entry', timeEntry.getAll);
+apiRouter.get('/time_entry/:id', timeEntry.getOne);
+
+module.exports = [appRouter, apiRouter];
