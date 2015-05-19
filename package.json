@@ -11,6 +11,7 @@
     "classnames": "^2.1.1",
     "flux": "^2.0.3",
     "koa": "^0.20.0",
+    "koa-bodyparser": "^2.0.0",
     "koa-handlebars": "^0.5.3",
     "koa-router": "^4.3.2",
     "koa-static": "^1.4.9",

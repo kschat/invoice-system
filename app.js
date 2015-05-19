@@ -3,6 +3,7 @@
 const koa = require('koa');
 const hbs = require('koa-handlebars');
 const serve = require('koa-static');
+const bodyParser = require('koa-bodyparser');
 const R = require('ramda');
 
 const settings = require('./config/settings');
@@ -21,6 +22,7 @@ app.use(hbs(handlebarsSettings({
 
 app.use(serve('./dist'));
 app.use(serve('./public'));
+app.use(bodyParser());
 
 routes.map(appUseRoute);
 
