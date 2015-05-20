@@ -57,10 +57,14 @@ const Job = sequelize.schema.define('Job', {
 
 Job.hasMany(TimeEntry, { as: 'entries', foreignKey: 'job_id' });
 
+// helpers
+
 Job.findAllWithEntries = R.partial(Job.findAll, includEntries);
 
 Job.findByIdWithEntries = R.compose(Job.findOne, findByIdQuery);
 
-Job.updateById = R.converge(Job.update, R.identity, R.flip(updateByIdQuery));
+Job.validProperties = ['title', 'hourlyRate', 'taxRate'];
+
+Job.sanitizeProperties = R.pick(Job.validProperties);
 
 module.exports = Job;

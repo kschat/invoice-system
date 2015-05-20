@@ -15,6 +15,8 @@ const app = koa();
 
 const appUseRoute = R.compose(app.use.bind(app), R.invoke('routes', []));
 
+R.isEmptyObject = R.compose(R.isEmpty, R.keys);
+
 app.use(hbs(handlebarsSettings({
   cache: app.env !== 'development',
   helpers: require('./lib/helpers')
