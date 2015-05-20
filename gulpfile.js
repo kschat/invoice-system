@@ -1,38 +1,29 @@
 'use strict';
 
-let gulp = require('gulp')
-  , utils = require('gulp-util')
-  , concat = require('gulp-concat')
-  , stylus = require('gulp-stylus')
-  , nodemon = require('gulp-nodemon')
-  , shell = require('gulp-shell')
-  , webpack = require('webpack')
-  , webpackConfig = require('./webpack.config')
-  , nib = require('nib')
-  , fs = require('fs')
+const gulp = require('gulp')
+const utils = require('gulp-util')
+const concat = require('gulp-concat')
+const stylus = require('gulp-stylus')
+const nodemon = require('gulp-nodemon')
+const shell = require('gulp-shell')
+const webpack = require('webpack')
+const webpackConfig = require('./webpack.config')
+const nib = require('nib')
+const fs = require('fs')
 
-  , webpackCompiler = webpack(webpackConfig)
-  , paths = {
-      stylus: './public/stylus/',
-      scripts: './public/js/',
-      dist: './dist/'
-    };
+const webpackCompiler = webpack(webpackConfig)
+const paths = {
+  stylus: './public/stylus/',
+  scripts: './public/js/',
+  dist: './dist/'
+};
 
-gulp.task('stylus', ['stylus:libs'], function() {
+gulp.task('stylus', function() {
   gulp.src(paths.stylus + 'main.styl')
     .pipe(stylus({
       use: nib(),
       linenos: true
     }))
-    .pipe(gulp.dest(paths.dist + 'css'));
-});
-
-gulp.task('stylus:libs', function() {
-  if(fs.existsSync(paths.dist + 'css/libs.css')) { return; }
-
-  gulp.src(paths.stylus + 'libs.styl')
-    .pipe(stylus({ 'include css': true }))
-    .pipe(concat('libs.css'))
     .pipe(gulp.dest(paths.dist + 'css'));
 });
 

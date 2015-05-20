@@ -1,6 +1,6 @@
 {
   "name": "invoice-system",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "Invoice system written in node",
   "private": true,
   "repository": {
@@ -28,6 +28,7 @@
     "babel-jest": "^5.2.0",
     "babel-loader": "^5.0.0",
     "babel-runtime": "^5.3.3",
+    "bower": "^1.4.1",
     "gulp": "^3.8.11",
     "gulp-concat": "^2.5.2",
     "gulp-nodemon": "^2.0.3",
@@ -43,7 +44,9 @@
     "iojs": "~2.0.1"
   },
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "gulp": "gulp",
+    "bower": "bower"
   },
   "jest": {
     "scriptPreprocessor": "<rootDir>/node_modules/babel-jest",
