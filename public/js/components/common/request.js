@@ -9,7 +9,7 @@ const InvalidJsonError = R.partial(
 
 const jsonContentRegex = /application\/json/i;
 
-const request = (url, { method = 'GET', status = 200 } = {}) => {
+const request = (url, { method = 'GET', status = 200, body = null, contentType = 'application/json' } = {}) => {
   return new Promise((resolve, reject) => {
     const req = new XMLHttpRequest();
 
@@ -34,7 +34,12 @@ const request = (url, { method = 'GET', status = 200 } = {}) => {
 
     req.onerror = R.compose(reject, NetworkError);
 
-    req.send();
+    body = jsonContentRegex.test(contentType)
+      ? JSON.stringify(body)
+      : body;
+
+    req.setRequestHeader('Content-Type', contentType);
+    req.send(body);
   });
 };
 

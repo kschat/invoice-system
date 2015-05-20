@@ -9,7 +9,7 @@ import jobApi from './components/job/jobApi';
 
 const DOMReady = R.partial(window.addEventListener, 'DOMContentLoaded');
 
-jobApi.getAllJobs()
+jobApi.getAll()
   .then(jobs => new Promise(resolve => DOMReady(resolve(jobs))))
   .then(jobs => {
     jobActions.receiveJobs(jobs);

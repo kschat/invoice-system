@@ -6,7 +6,11 @@ const appConstants = keyMirror({
   UPDATE_JOB: null,
   UPDATE_TIME_ENTRY: null,
   UPDATE_JOB_SUCCESS: null,
-  RECEIVE_JOB_SUCCESS: null
+  RECEIVE_JOB_SUCCESS: null,
+  ADD_JOB: null,
+  ADD_JOB_SUCCESS: null,
+  ADD_JOB_FAIL: null,
+  ADD_TIME_ENTRY: null
 });
 
 export default appConstants;

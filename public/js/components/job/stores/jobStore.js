@@ -1,8 +1,9 @@
 import R from 'ramda';
+import { EventEmitter } from 'events';
 import AppDispatcher from '../../application/appDispatcher';
 import AppConstants from '../../application/appConstants';
 import jobActions from '../jobActions';
-import { EventEmitter } from 'events';
+import jobApi from '../jobApi';
 
 let _selected = null;
 
@@ -44,8 +45,11 @@ const actions = {
   },
 
   [AppConstants.DELETE_JOB]: action => {
-    _jobs = R.remove(_getIndexById(action.data, _jobs), 1, _jobs);
-    _selected = null;
+    return jobApi.remove(action.data)
+      .then(message => {
+        _jobs = R.remove(_getIndexById(action.data, _jobs), 1, _jobs);
+        _selected = null;
+      });
   },
 
   [AppConstants.UPDATE_JOB]: action => {
@@ -70,6 +74,28 @@ const actions = {
     _jobs = action.data;
   },
 
+  [AppConstants.ADD_JOB]: action => {
+    return jobApi.add(action.data)
+      .then(message => {
+        _jobs.push(action.data);
+        actions[AppConstants.ADD_JOB_SUCCESS](action);
+      })
+      .catch(actions[AppConstants.ADD_JOB_FAIL]);
+  },
+
+  [AppConstants.ADD_JOB_SUCCESS]: action => {},
+
+  [AppConstants.ADD_JOB_FAIL]: action => {},
+
+  [AppConstants.ADD_TIME_ENTRY]: action => {
+    const body = R.omit(['id'], action.data);
+
+    return jobApi.addTimeEntry(action.data.id, body)
+      .then(message => {
+        _selected.entries.push(body);
+      });
+  },
+
   default: () => true
 };
 
@@ -80,7 +106,11 @@ AppDispatcher.register(payload => {
     return actions.default();
   }
 
-  actionDelegate(payload.action);
+  const p = actionDelegate(payload.action);
+
+  if(p && p.then) {
+    return p.then((data) => jobStore.emit('change'));
+  }
 
   jobStore.emit('change');
 });

@@ -2,15 +2,16 @@ import React from 'react';
 import cx from 'classnames';
 import R from 'ramda';
 import jobActions from '../jobActions';
-import StageTextInput from '../../common/inputs/StageTextInput';
 import TimeTable from '../../timeEntry/views/timeTable';
+import AddTimeEntryModal from '../../timeEntry/views/addTimeEntryModal';
 import {
     Panel,
     Button,
     ButtonGroup,
     ButtonToolbar,
     Alert,
-    Input
+    Input,
+    ModalTrigger
   } from 'react-bootstrap';
 
 const JobInfo = React.createClass({
@@ -74,9 +75,11 @@ const JobInfo = React.createClass({
     return this.state.editMode && (
       <div className="clearfix">
         <span className="text-muted">{message}</span>
-        <Button className="pull-right">
-          <i className="fa fa-clock-o" /> Log time
-        </Button>
+        <ModalTrigger modal={<AddTimeEntryModal jobId={job.id} />}>
+          <Button className="pull-right">
+            <i className="fa fa-clock-o" /> Log time
+          </Button>
+        </ModalTrigger>
       </div>
     );
   },
@@ -121,17 +124,17 @@ const JobInfo = React.createClass({
         {showDeleteAlert && this.renderDeleteAlert(job)}
 
         <form className="form-horizontal">
-          <StageTextInput
+          <Input
             {...inputProps}
+            type="text"
             label="Hourly rate"
-            value={job.hourlyRate}
-            onSave={R.partial(this.handleInputChange, job.id, 'hourlyRate')} />
+            value={job.hourlyRate} />
 
-          <StageTextInput
+          <Input
             {...inputProps}
+            type="text"
             label="Tax rate"
-            value={job.taxRate}
-            onSave={R.partial(this.handleInputChange, job.id, 'taxRate')} />
+            value={job.taxRate} />
         </form>
 
         {job.entries && !!job.entries.length && this.renderTimeEntries(job)}
