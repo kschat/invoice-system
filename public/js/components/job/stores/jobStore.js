@@ -8,41 +8,17 @@ let _selected = null;
 
 let _jobSaveStatus = null;
 
-let _jobs = [
-  {
-    title: 'testing 1',
-    id: 0,
-    hourlyRate: '$25.00',
-    taxRate: 0.07,
-    entries: [
-      {
-        id: 0,
-        timeSpent: 60,
-        entryDate: Date.now(),
-        workSummary: 'I did some work'
-      },
-      {
-        id: 1,
-        timeSpent: 120,
-        entryDate: Date.now(),
-        workSummary: 'I did other some work'
-      }
-    ]
-  },
-  {
-    title: 'testing 2',
-    id: 1,
-    hourlyRate: '$15.00',
-    taxRate: 0.10,
-    entries: []
-  },
-];
+let _jobs = [];
 
 const _idEq = R.propEq('id');
 
-const _getJobById = R.compose(R.find(R.__, _jobs), _idEq);
+const _getById = R.converge(R.find, R.nAry(1, _idEq), R.flip(R.identity));
 
-const _getJobIndexById = R.compose(R.findIndex(R.__, _jobs), _idEq);
+const _getIndexById = R.converge(
+  R.findIndex,
+  R.nAry(1, _idEq),
+  R.flip(R.identity)
+);
 
 class JobStore extends EventEmitter {
   get jobs() { return _jobs; }
@@ -64,11 +40,11 @@ const jobStore = new JobStore();
 
 const actions = {
   [AppConstants.SELECT_JOB]: action => {
-    _selected = _getJobById(action.data);
+    _selected = _getById(action.data, _jobs);
   },
 
   [AppConstants.DELETE_JOB]: action => {
-    _jobs = R.remove(R.findIndex(_idEq(action.data), _jobs), 1, _jobs);
+    _jobs = R.remove(_getIndexById(action.data, _jobs), 1, _jobs);
     _selected = null;
   },
 
@@ -78,7 +54,7 @@ const actions = {
   },
 
   [AppConstants.UPDATE_TIME_ENTRY]: action => {
-    const index = R.findIndex(_idEq(action.data.id), _selected.entries);
+    const index = _getIndexById(action.data.id, _selected.entries);
     _selected.entries[index][action.data.prop] = action.data.value;
     actions[AppConstants.UPDATE_JOB_SUCCESS](action);
   },
@@ -88,6 +64,10 @@ const actions = {
       status: 'success',
       message: 'Update successful'
     };
+  },
+
+  [AppConstants.RECEIVE_JOB_SUCCESS]: action => {
+    _jobs = action.data;
   },
 
   default: () => true

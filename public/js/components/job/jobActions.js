@@ -35,6 +35,13 @@ const JobActions = {
       actionType: AppConstants.UPDATE_JOB_SUCCESS,
       data
     });
+  },
+
+  receiveJobs(data) {
+    AppDispatcher.handleAction({
+      actionType: AppConstants.RECEIVE_JOB_SUCCESS,
+      data
+    });
   }
 }
 
